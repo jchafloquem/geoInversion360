@@ -1,0 +1,1 @@
+var e=class{},l=e;function i(o,...r){let t="";for(let n=0;n<r.length;n++)t+=o[n]+r[n];return t+=o[o.length-1],t}(function(o){function r(n){return Math.round(n).toString()}function t(n){return n.toPrecision(8)}o.int=r,o.float=t})(i||(i={}));export{l as a,i as b};

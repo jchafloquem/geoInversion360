@@ -1,0 +1,1 @@
+import{a as e,b as o}from"./chunk-VUCOCALS.js";import"./chunk-F2OWJI2Q.js";import"./chunk-P454QITB.js";import"./chunk-T62VBPHF.js";import"./chunk-MDAB6L5Y.js";import"./chunk-OMNN7QFV.js";import"./chunk-JEGVIFEP.js";var n=e,m=o;export{n as CalciteIcon,m as defineCustomElement};

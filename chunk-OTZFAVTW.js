@@ -1,0 +1,1 @@
+import{o as s,q as f}from"./chunk-ATXTHXJA.js";import{h as c}from"./chunk-LM5MGO7W.js";import{a}from"./chunk-ZGLJFDS6.js";function P(t,r,e,i){if(f(t.spatialReference,e)){o[0]=t.x,o[1]=t.y;let p=t.z;return o[2]=p??i??0,c(o,t.spatialReference,0,r,e,0,1)}let n=s(t,e);return!!n&&(r[0]=n?.x,r[1]=n?.y,r[2]=n?.z??i??0,!0)}var o=a();export{P as a};

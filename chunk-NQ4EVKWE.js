@@ -1,0 +1,1 @@
+import{Mb as a,ca as o}from"./chunk-4D3TEMZK.js";import"./chunk-JEGVIFEP.js";var c=(()=>{let e=class e{};e.\u0275fac=function(n){return new(n||e)},e.\u0275cmp=o({type:e,selectors:[["app-welcome"]],standalone:!0,features:[a],decls:0,vars:0,template:function(n,i){}});let t=e;return t})();export{c as default};

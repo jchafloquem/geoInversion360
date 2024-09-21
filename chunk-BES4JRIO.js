@@ -1,0 +1,1 @@
+import{a as o,b as t}from"./chunk-QYC4ILGT.js";var e=class{};function i(n){return n instanceof o?n===e.instance:n?.toString().toLowerCase()==="unknown"}function r(n){return i(n)?e.instance:n}e.instance=new t("Etc/UTC");export{e as a,i as b,r as c};
