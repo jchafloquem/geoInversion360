@@ -4,168 +4,50 @@ import {LayerConfig} from '../interfaces/layerConfig';
 //*Libreria de ArcGIS 4.30
 import * as projection from '@arcgis/core/geometry/projection';
 import BasemapGallery from '@arcgis/core/widgets/BasemapGallery.js';
-import Color from '@arcgis/core/Color';
 import CoordinateConversion from '@arcgis/core/widgets/CoordinateConversion.js';
 import Expand from '@arcgis/core/widgets/Expand.js';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer.js';
-import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Home from '@arcgis/core/widgets/Home.js';
-import LabelClass from '@arcgis/core/layers/support/LabelClass.js';
 import Legend from '@arcgis/core/widgets/Legend.js';
 import Map from '@arcgis/core/Map.js';
 import MapView from '@arcgis/core/views/MapView.js';
 import Point from '@arcgis/core/geometry/Point';
-import PopupTemplate from '@arcgis/core/PopupTemplate.js';
-import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol.js';
-import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import Zoom from '@arcgis/core/widgets/Zoom.js';
 
-//*Personalizacion <--SimpleFillSymbol-->
-const fillSymbolDepartamento = new SimpleFillSymbol({
-	color: new Color([255, 255, 255, 0]), // Color rojo con 50% de opacidad
-	outline: {
-		color: new Color([0, 0, 0]),
-		width: 2,
-	},
-});
-const fillSymbolProvincia = new SimpleFillSymbol({
-	color: [0, 0, 0, 0], // Color rojo con 50% de opacidad
-	outline: {
-		color: [0, 255, 0],
-		width: 2,
-	},
-});
-const fillSymbolDistrito = new SimpleFillSymbol({
-	color: [0, 0, 0, 0], // Color rojo con 50% de opacidad
-	outline: {
-		color: [255, 0, 0],
-		width: 2,
-	},
-});
 
-//*Personalizacion <--SimpleRenderer-->
-const rendererDepartamento = new SimpleRenderer({
-	symbol: fillSymbolDepartamento,
-});
-const rendererProvincia = new SimpleRenderer({
-	symbol: fillSymbolProvincia,
-});
-const rendererDistrito = new SimpleRenderer({
-	symbol: fillSymbolDistrito,
-});
 
-//*Personalizacion <--PopupTemplate-->
-const popuTemplateDepartamento = new PopupTemplate({
-	title: '{NOMBDEP}',
-	content: [
-		{
-			type: 'fields',
-			fieldInfos: [
-				{
-					fieldName: 'CODDEP',
-					label: 'Codigo',
-					visible: true,
-				},
-			],
-		},
-	],
-});
-const popuTemplateProvincia = new PopupTemplate({
-	title: '{NOMBPROV}',
-	content: [
-		{
-			type: 'fields',
-			fieldInfos: [
-				{
-					fieldName: 'CODPROV',
-					label: 'Codigo',
-					visible: true,
-				},
-			],
-		},
-	],
-});
-const popuTemplateDistrito = new PopupTemplate({
-	title: '{NOMBDIST}',
-	content: [
-		{
-			type: 'fields',
-			fieldInfos: [
-				{
-					fieldName: 'CODDIST',
-					label: 'Codigo',
-					visible: true,
-				},
-			],
-		},
-	],
-});
-//*Personalizacion <--LabelClass-->
-const labelClassDepartamento = new LabelClass({
-	labelExpressionInfo: {expression: '$feature.NOMBDEP'},
-	symbol: {
-		type: 'text',
-		color: 'black',
-		haloColor: 'white',
-		haloSize: '1px',
-		font: {
-			size: 10,
-			family: 'sans-serif',
-			weight: 'bold',
-		},
-	},
-	labelPlacement: 'always-horizontal',
-	minScale: 0,
-	maxScale: 0,
-});
-const labelClassProvincia = new LabelClass({
-	labelExpressionInfo: {expression: '$feature.NOMBPROV'},
-	symbol: {
-		type: 'text',
-		color: [0, 255, 0],
-		haloColor: 'black',
-		haloSize: '1px',
-		font: {
-			size: 10,
-			family: 'sans-serif',
-			weight: 'bold',
-		},
-	},
-	labelPlacement: 'always-horizontal',
-	minScale: 0,
-	maxScale: 0,
-});
-const labelClassDistrito = new LabelClass({
-	labelExpressionInfo: {expression: '$feature.NOMBDIST'},
-	symbol: {
-		type: 'text',
-		color: 'red',
-		haloColor: 'white',
-		haloSize: '1px',
-		font: {
-			size: 10,
-			family: 'sans-serif',
-			weight: 'bold',
-		},
-	},
-	labelPlacement: 'always-horizontal',
-	minScale: 0,
-	maxScale: 0,
-});
+
 
 @Injectable({
 	providedIn: 'root',
 })
 export class GeovisorSharedService {
+
 	public mapa = new Map({basemap: 'topo-vector'});
+
 	public view!: MapView;
+
 	public layerUrls = {
-		baseService: 'https://winlmprap09.midagri.gob.pe/winlmprap14/rest/services/ideMidagri',
+		baseService: 'https://services8.arcgis.com/tPY1NaqA2ETpJ86A/arcgis/rest/services',
 		limits: {
-			departamentos: 'Limites_Censales/MapServer/0',
-			provincias: 'Limites_Censales/MapServer/1',
-			distritos: 'Limites_Censales/MapServer/2',
+			provincia: 'LM_Limites/FeatureServer/0',
+			lmetropolitana: 'LM_Limites/FeatureServer/1',
+			unidAnalisis: 'LM_Limites/FeatureServer/2',
+			rios: 'LM_Limites/FeatureServer/4',
+			puertos: 'LM_Limites/FeatureServer/29',
+			peligNaturales: 'LM_Limites/FeatureServer/28',
+			peligAccionHumana: 'LM_Limites/FeatureServer/21',
+			canales: 'LM_Limites/FeatureServer/20',
+
+			vias_acc_transito: 'LM_Limites/FeatureServer/19',
+			vias_prin_truncas: 'LM_Limites/FeatureServer/18',
+			vias_congestionadas: 'LM_Limites/FeatureServer/17',
+			vias_actual: 'LM_Limites/FeatureServer/16',
+			vias_trans_public: 'LM_Limites/FeatureServer/15',
+
+			ambito: 'LM_Limites/FeatureServer/14',
+
 		},
 	};
 
@@ -173,33 +55,106 @@ export class GeovisorSharedService {
 	public layers: LayerConfig[] = [
 		//*Servicios de capas base
 		{
-			title: 'LIMITE DE DEPARTAMENTOS',
-			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.departamentos}`,
-			labelingInfo: [labelClassDepartamento],
-			popupTemplate: popuTemplateDepartamento,
-			renderer: rendererDepartamento,
+			title: 'AMBITO DE INTERVENCION',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.ambito}`,
+			//labelingInfo: [],
+			popupTemplate: undefined,
+			renderer: undefined,
 			visible: true,
-			group: 'Límites Censales',
+			group: 'LIMITES',
 		},
 		{
 			title: 'LIMITE DE PROVINCIAS',
-			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.provincias}`,
-			labelingInfo: [labelClassProvincia],
-			popupTemplate: popuTemplateProvincia,
-			renderer: rendererProvincia,
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.provincia}`,
+			//labelingInfo: [],
+			popupTemplate: undefined,
+			renderer: undefined,
 			visible: true,
-			group: 'Límites Censales',
+			group: 'LIMITES',
 		},
 		{
-			title: 'LIMITE DE DISTRITOS',
-			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.distritos}`,
-			labelingInfo: [labelClassDistrito],
-			popupTemplate: popuTemplateDistrito,
-			renderer: rendererDistrito,
-			visible: true,
-			group: 'Límites Censales',
+			title:'LIMA METROPOLITANA',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.lmetropolitana}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group:'LIMITES'
 		},
-		//*Servicios de capas de informacion
+		{
+			title:'UNIDAD DE ANALISIS',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.unidAnalisis}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group:'LIMITES'
+		},
+		{
+			title: 'RIOS',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.rios}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			group: 'HIDROGRAFIA',
+		},
+		{
+			title: 'CANALES',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.canales}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			group: 'HIDROGRAFIA',
+		},
+		{
+			title: 'ESTRUCTURA ECOLOGICA',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.puertos}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group: 'ESTRUCTURA',
+		},
+		{
+			title: 'SINTESIS DE PELIGROS NATURALES',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.peligNaturales}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group: 'PELIGROS',
+		},
+		{
+			title: 'PELIGROS POR ACCION HUMANA',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.peligAccionHumana}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group: 'PELIGROS',
+		},
+		{
+			title: 'MUERTE POR ACCIDENTE DE TRANSITO',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.vias_acc_transito}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group: 'VIAS',
+		},
+		{
+			title: 'PRINCIPALES TRUNCAS',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.vias_prin_truncas}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group: 'VIAS',
+		},
+		{
+			title: 'CONGESTIONADAS',
+			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.vias_congestionadas}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			group: 'VIAS',
+		},
+
+
+
 
 
 	];
@@ -266,8 +221,8 @@ export class GeovisorSharedService {
 		const view = new MapView({
 			container: container,
 			map: this.mapa,
-			center: [-75.015152, -10.189967],
-			zoom: 5.80,
+			center: [-77.02824, -12.04318],
+			zoom: 10.0,
 			rotation: 0,
 			constraints: {
 				maxZoom: 25,
@@ -356,40 +311,40 @@ export class GeovisorSharedService {
 		});
 	}
 
-	public regionFeature!: FeatureLayer;
-	getRegionFeature(): FeatureLayer {
-		this.regionFeature = new FeatureLayer({
-			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.departamentos}`,
-			visible: false,
-		});
-		return this.regionFeature;
-	}
-	public provinciaFeature!: FeatureLayer;
-	getProvinciaFeature(): FeatureLayer {
-		this.provinciaFeature = new FeatureLayer({
-			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.provincias}`,
-			visible: false,
-		});
-		return this.provinciaFeature;
-	}
-	public distritosFeature!: FeatureLayer;
-	getDistritosFeature(): FeatureLayer {
-		this.distritosFeature = new FeatureLayer({
-			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.distritos}`,
-			visible: false,
-		});
-		return this.distritosFeature;
-	}
+	// public regionFeature!: FeatureLayer;
+	// getRegionFeature(): FeatureLayer {
+	// 	this.regionFeature = new FeatureLayer({
+	// 		url: `${this.layerUrls.baseService}/${this.layerUrls.limits.provincia}`,
+	// 		visible: false,
+	// 	});
+	// 	return this.regionFeature;
+	// }
+	// public provinciaFeature!: FeatureLayer;
+	// getProvinciaFeature(): FeatureLayer {
+	// 	this.provinciaFeature = new FeatureLayer({
+	// 		url: `${this.layerUrls.baseService}/${this.layerUrls.limits.lmetropolitana}`,
+	// 		visible: false,
+	// 	});
+	// 	return this.provinciaFeature;
+	// }
+	// public distritosFeature!: FeatureLayer;
+	// getDistritosFeature(): FeatureLayer {
+	// 	this.distritosFeature = new FeatureLayer({
+	// 		url: `${this.layerUrls.baseService}/${this.layerUrls.limits.unidAnalisis}`,
+	// 		visible: false,
+	// 	});
+	// 	return this.distritosFeature;
+	// }
 
-	async removeLayerFromGroup(groupId: string, layerId: string): Promise<void> {
-		const groupLayer = this.mapa?.layers.find((layer) => {
-			return layer instanceof GroupLayer && layer.id === groupId;
-		}) as GroupLayer;
-		if (groupLayer) {
-			const layerToRemove = groupLayer.findLayerById(layerId);
-			if (layerToRemove) {
-				groupLayer.remove(layerToRemove);
-			}
-		}
-	}
+	// async removeLayerFromGroup(groupId: string, layerId: string): Promise<void> {
+	// 	const groupLayer = this.mapa?.layers.find((layer) => {
+	// 		return layer instanceof GroupLayer && layer.id === groupId;
+	// 	}) as GroupLayer;
+	// 	if (groupLayer) {
+	// 		const layerToRemove = groupLayer.findLayerById(layerId);
+	// 		if (layerToRemove) {
+	// 			groupLayer.remove(layerToRemove);
+	// 		}
+	// 	}
+	// }
 }

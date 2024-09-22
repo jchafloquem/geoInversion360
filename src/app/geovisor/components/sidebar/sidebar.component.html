@@ -27,7 +27,7 @@
 			>
 				<mat-icon class="material-icons-round">view_list</mat-icon>
 			</button>
-			<button
+			<!-- <button
 				mat-icon-button
 				class=""
 				color="accent"
@@ -37,7 +37,7 @@
 				(click)="clickToogleMenu('filtros')"
 			>
 				<mat-icon class="material-icons-round">search</mat-icon>
-			</button>
+			</button> -->
 			<button
 				mat-icon-button
 				class=""
@@ -82,10 +82,10 @@
 			} @if (subMenu==='acerca') {
 			<app-acerca class="h-full"></app-acerca>
 			}
-			<app-filtro
+			<!-- <app-filtro
 				class="h-full"
 				[ngClass]="{ hidden: subMenu !== 'filtros' }"
-			></app-filtro>
+			></app-filtro> -->
 		</div>
 	</div>
 </div>

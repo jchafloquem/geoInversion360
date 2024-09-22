@@ -7,23 +7,23 @@ import {GeovisorSharedService} from '../../services/geovisor.service';
 // import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import {CapasComponent} from './components/capas/capas.component';
 import {LeyendaComponent} from './components/leyenda/leyenda.component';
-import {FiltroComponent} from './components/filtro/filtro.component';
+
 import { AcercaComponent } from './components/acerca/acerca.component';
 
 @Component({
 	selector: 'app-sidebar',
 	standalone: true,
-	imports: [CommonModule, MatIconModule, NgClass, MatButtonModule, CapasComponent, LeyendaComponent, FiltroComponent, AcercaComponent],
+	imports: [CommonModule, MatIconModule, NgClass, MatButtonModule, CapasComponent, LeyendaComponent, AcercaComponent],
 	templateUrl: './sidebar.component.html',
 	styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
 	public _geovisorSharedService = inject(GeovisorSharedService);
-	public subMenu: 'leyendas' | 'capas' | 'filtros' |'acerca' = 'capas';
+	public subMenu: 'leyendas' | 'capas' | 'acerca' = 'capas';
 
 	public toogleMenu = false;
 
-	clickToogleMenu(filtro?: 'leyendas' | 'capas' | 'filtros'|'acerca'): void {
+	clickToogleMenu(filtro?: 'leyendas' | 'capas' | 'acerca'): void {
 		if (filtro == undefined) {
 			this.toogleMenu = !this.toogleMenu;
 		} else {
