@@ -23,7 +23,7 @@ export const routes: Routes = [
 			},
 			{
 				path: '',
-				redirectTo: 'welcome',
+				redirectTo: 'login',
 				pathMatch: 'full',
 			},
 
@@ -47,7 +47,7 @@ export const routes: Routes = [
 	},
 	{
 		path: '',
-		redirectTo: 'geovisor',
+		redirectTo: 'auth',
 		pathMatch: 'full',
 	},
 	{
