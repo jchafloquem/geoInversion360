@@ -3,8 +3,10 @@ import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer.js';
 import LabelClass from '@arcgis/core/layers/support/LabelClass.js';
 
 export interface LayerConfig {
+	geometryType?: string;
 	group: string; //* Agrupación de capas
 	labelingInfo?: [LabelClass];
+	labelsVisible?:boolean
 	maxScale?: number;
 	minScale?: number;
 	outFields?: string[];

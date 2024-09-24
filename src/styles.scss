@@ -11,6 +11,8 @@
 	text-decoration: none;
 	border: none;
 	outline: none;
+
+
 }
 html,
 body {
@@ -29,7 +31,7 @@ body {
 }
 
 .esri-ui-top-right.esri-ui-corner {
-	top: 70px;
+	top: 80px;
 }
 .esri-widget {
 	box-sizing: border-box;
@@ -39,8 +41,11 @@ body {
 		var(--esri-widget-padding-x);
 	background-color: #fff;
 	font-family: Avenir Next, Helvetica Neue, helvetica, arial, sans-serif;
+
 	font-size: 14px;
 	line-height: 1.3em;
+
+
 }
 .esri-component {
 	background-size: auto;
