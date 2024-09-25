@@ -53,6 +53,17 @@
 		<div>
 			<button
 				mat-icon-button
+				class=""
+				color="accent"
+				[ngClass]="{
+					'text-white bg-cyan-700 rounded-none ': subMenu === 'logout'
+				}"
+				(click)="clickToogleMenu('logout')"
+			>
+				<mat-icon class="material-icons-round">logout </mat-icon>
+			</button>
+			<button
+				mat-icon-button
 				class="bg-cyan-700 text-white rounded-none"
 				color="primary"
 				(click)="clickToogleMenu()"
@@ -81,7 +92,10 @@
 			<app-leyenda class="h-full"></app-leyenda>
 			} @if (subMenu==='acerca') {
 			<app-acerca class="h-full"></app-acerca>
+			} @if (subMenu==='logout') {
+				<app-logout></app-logout>
 			}
+
 			<!-- <app-filtro
 				class="h-full"
 				[ngClass]="{ hidden: subMenu !== 'filtros' }"

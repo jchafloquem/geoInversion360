@@ -6,10 +6,6 @@ export const routes: Routes = [
 		loadComponent: () => import('./auth/auth.component'),
 		children: [
 			{
-				path: 'welcome',
-				loadComponent: () => import('./auth/pages/welcome/welcome.component'),
-			},
-			{
 				path: 'login',
 				loadComponent: () => import('./auth/pages/login/login.component'),
 			},
