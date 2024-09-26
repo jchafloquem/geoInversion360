@@ -187,6 +187,46 @@ const popupOtrDelitos = new PopupTemplate({
 		},
 	],
 });
+const popupRoboAgravado = new PopupTemplate({
+	title: '{GENERICO}',
+	content: [
+		{
+			type: 'fields',
+			fieldInfos: [
+				{
+					fieldName: 'MODALIDAD',
+					label: 'Modalidad',
+					visible: true,
+				},
+				{
+					fieldName: 'ESPECIFICO',
+					label: 'Especifico',
+					visible: true,
+				},
+				{
+					fieldName: 'MES',
+					label: 'Mes',
+					visible: true,
+				},
+				{
+					fieldName: 'anio',
+					label: 'Año',
+					visible: true,
+				},
+				{
+					fieldName: 'X',
+					label: 'Longitud',
+					visible: true,
+				},
+				{
+					fieldName: 'Y',
+					label: 'Latitud',
+					visible: true,
+				},
+			],
+		},
+	],
+});
 
 
 @Injectable({
@@ -197,22 +237,43 @@ export class GeovisorSharedService {
 	public view!: MapView;
 
 	public layerUrls = {
-		baseService: 'https://www.idep.gob.pe/geoportal/rest/services/DATOS_GEOESPACIALES',
+		baseService: 'https://www.idep.gob.pe/geoportal/rest/services',
 		limits: {
-			departamentos: 'LÍMITES/FeatureServer/3',
-			provincias: 'LÍMITES/FeatureServer/4',
-			distritos: 'LÍMITES/FeatureServer/5',
+			departamentos: 'DATOS_GEOESPACIALES/LÍMITES/FeatureServer/3',
+			provincias: 'DATOS_GEOESPACIALES/LÍMITES/FeatureServer/4',
+			distritos: 'DATOS_GEOESPACIALES/LÍMITES/FeatureServer/5',
 		}
 	}
 	//*Servicio de delitos fuente INEI
 	public layerUrlsDelitos = {
-		baseServicio: 'https://arcgis3.inei.gob.pe:6443/arcgis/rest/services/Datacrim/DATACRIM002_AGS_PUNTOSDELITOS',
+		baseServicio: 'https://arcgis3.inei.gob.pe:6443/arcgis/rest/services/Datacrim',
 		delito: {
-			patrimonio: 'MapServer/45',
-			vidaCuerpoSalud : 'MapServer/46',
-			contraLibertad : 'MapServer/47',
-			otrosDelitos: 'MapServer/48',
-		},
+			patrimonio: 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/45',
+			vidaCuerpoSalud : 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/46',
+			contraLibertad : 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/47',
+			otrosDelitos: 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/48',
+		}
+	};
+
+	public layerUrlsModalidadDelito = {
+		baseServicio: 'https://arcgis3.inei.gob.pe:6443/arcgis/rest/services/Datacrim',
+		modalidad: {
+			roboAgravado: 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/242',
+			roboAgravadoManoArmada : 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/243',
+			robo : 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/244',
+			hurto: 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/245',
+			hurtoAgravado: 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/246',
+			hurtoVehiculo: 'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/247',
+			asaltoRoboVehiculos:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/248',
+			homicidioCalificado:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/249',
+			homicidioConArma:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/250',
+			hurtoAgravadoEnCasa:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/251',
+			roboFustrado:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/252',
+			roboAgravadoNoche:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/253',
+			microcomercializacionDrogas:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/254',
+			hurtoFustrado:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/255',
+			estafasDefraudaciones:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/256'
+		}
 	};
 
 
@@ -221,11 +282,147 @@ export class GeovisorSharedService {
 	public layers: LayerConfig[] = [
 		//*Servicios de capas base
 		{
+			title:'ESTAFA Y OTRAS DEFRAUDACIONES',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.estafasDefraudaciones}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'HURTO FRUSTRADO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoFustrado}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'MICROCOMERCIALIZACION DE DROGAS',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.microcomercializacionDrogas}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'ROBO AGRAVADO DURANTE LA NOCHE O EN LUGAR DESOLADO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.roboAgravadoNoche}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'ROBO FRUSTRADO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.roboFustrado}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'HURTO AGRAVADO EN CASA HABITADA',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoAgravadoEnCasa}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'HOMICIDIO POR ARMA DE FUEGO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.homicidioConArma}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'HOMICIDIO CALIFICADO - ASESINATO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.homicidioCalificado}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'ASALTO Y ROBO DE VEHICULOS',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.asaltoRoboVehiculos}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'HURTO DE VEHICULO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoVehiculo}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: true,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'HURTO AGRAVADO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoAgravado}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'HURTO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurto}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'ROBO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.robo}`,
+			popupTemplate: undefined,
+			renderer: undefined,
+			visible: false,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'ROBO AGRAVADO A MANO ARMADA',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.roboAgravadoManoArmada}`,
+			popupTemplate: popupRoboAgravado,
+			renderer: undefined,
+			visible: false,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		{
+			title:'ROBO AGRAVADO',
+			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.roboAgravado}`,
+			popupTemplate: popupRoboAgravado,
+			renderer: undefined,
+			visible: false,
+			geometryType: "point",
+			group:'MODALIDAD DE DELITO 2023'
+		},
+		//*Capas de Otros delitos
+		{
 			title:'OTROS DELITOS',
 			url: `${this.layerUrlsDelitos.baseServicio}/${this.layerUrlsDelitos.delito.otrosDelitos}`,
 			popupTemplate: popupOtrDelitos,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'DELITOS GENERICOS 2023'
 		},
@@ -381,7 +578,7 @@ export class GeovisorSharedService {
 			label:'Buscar',
 			locationEnabled:true,
 			maxResults:5,
-			
+
 		}),
 			{position:'top-right', index:0})
 		view.ui.add(new Zoom({view}),{position:'top-right',index:1});
