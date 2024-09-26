@@ -367,7 +367,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoVehiculo}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
