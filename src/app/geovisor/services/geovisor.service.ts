@@ -228,6 +228,41 @@ const popupRoboAgravado = new PopupTemplate({
 	],
 });
 
+const clusterConfig = {
+	type: "cluster",
+	clusterRadius: "100px",
+	// {cluster_count} is an aggregate field containing
+	// the number of features comprised by the cluster
+	popupTemplate: {
+	  title: "Cluster summary",
+	  content: "This cluster represents {MES} earthquakes.",
+	  fieldInfos: [{
+		fieldName: "MES",
+		format: {
+		  places: 0,
+		  digitSeparator: true
+		}
+	  }]
+	},
+	clusterMinSize: "24px",
+	clusterMaxSize: "60px",
+	labelingInfo: [{
+	  deconflictionStrategy: "none",
+	  labelExpressionInfo: {
+		expression: "Text($feature.MES, '#,###')"
+	  },
+	  symbol: {
+		type: "text",
+		color: "#004a5d",
+		font: {
+		  weight: "bold",
+		  family: "Noto Sans",
+		  size: "12px"
+		}
+	  },
+	  labelPlacement: "center-center",
+	}]
+  };
 
 @Injectable({
 	providedIn: 'root',
@@ -275,10 +310,6 @@ export class GeovisorSharedService {
 			estafasDefraudaciones:'DATACRIM002_AGS_PUNTOSDELITOS/MapServer/256'
 		}
 	};
-
-
-
-
 	public layers: LayerConfig[] = [
 		//*Servicios de capas base
 		{
@@ -288,6 +319,10 @@ export class GeovisorSharedService {
 			renderer: undefined,
 			visible: true,
 			geometryType: "point",
+			featureReduction: {
+				type: "cluster",
+				clusterRadius: 100,
+			},
 			group:'MODALIDAD DE DELITO 2023'
 		},
 		{
@@ -295,7 +330,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoFustrado}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -304,7 +339,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.microcomercializacionDrogas}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -313,7 +348,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.roboAgravadoNoche}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -322,7 +357,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.roboFustrado}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -331,7 +366,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoAgravadoEnCasa}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -340,7 +375,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.homicidioConArma}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -349,7 +384,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.homicidioCalificado}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -358,7 +393,7 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.asaltoRoboVehiculos}`,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
@@ -453,7 +488,6 @@ export class GeovisorSharedService {
 			geometryType: "point",
 			group:'DELITOS GENERICOS 2023'
 		},
-
 		{
 			title: 'DISTRITOS',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.distritos}`,
@@ -463,7 +497,6 @@ export class GeovisorSharedService {
 			visible: true,
 			group: 'LIMITES POLITICOS',
 		},
-
 		{
 			title: 'PROVINCIAS',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.provincias}`,
@@ -474,7 +507,6 @@ export class GeovisorSharedService {
 			labelsVisible: false,
 			group: 'LIMITES POLITICOS',
 		},
-
 		{
 			title: 'DEPARTAMENTOS',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.departamentos}`,
@@ -485,7 +517,6 @@ export class GeovisorSharedService {
 			labelsVisible: false,
 			group: 'LIMITES POLITICOS',
 		},
-
 	];
 
 	public lis: [] = [];
@@ -512,6 +543,9 @@ export class GeovisorSharedService {
 					title: layerConfig.title,
 					visible: layerConfig.visible,
 					outFields: layerConfig.outFields,
+					featureReduction:layerConfig.featureReduction
+
+
 				});
 			}
 			else if (layerConfig.popupTemplate && layerConfig.renderer == undefined) {
@@ -521,6 +555,7 @@ export class GeovisorSharedService {
 					popupTemplate: layerConfig.popupTemplate,
 					labelsVisible: layerConfig.labelsVisible,
 					visible: layerConfig.visible,
+					featureReduction:layerConfig.featureReduction
 				});
 			}
 			else if (layerConfig.popupTemplate && layerConfig.renderer && layerConfig.labelingInfo == undefined) {
@@ -531,6 +566,7 @@ export class GeovisorSharedService {
 					renderer: layerConfig.renderer,
 					visible: layerConfig.visible,
 					labelsVisible: layerConfig.labelsVisible,
+					featureReduction:layerConfig.featureReduction
 				});
 			}
 			else {
@@ -545,6 +581,7 @@ export class GeovisorSharedService {
 					maxScale: layerConfig.maxScale,
 					minScale: layerConfig.minScale,
 					labelsVisible: layerConfig.labelsVisible,
+					featureReduction:layerConfig.featureReduction
 				});
 			}
 			this.mapa.add(featureLayer);
