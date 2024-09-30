@@ -269,8 +269,48 @@ const popupestafasDefraudaciones = new PopupTemplate({
 		},
 	],
 });
+const popupHurtoVewhiculo = new PopupTemplate({
+	title: '{MODALIDAD}',
+	content: [
+		{
+			type: 'fields',
+			fieldInfos: [
+				{
+					fieldName: 'MODALIDAD',
+					label: 'Modalidad',
+					visible: true,
+				},
+				{
+					fieldName: 'ESPECIFICO',
+					label: 'Especifico',
+					visible: true,
+				},
+				{
+					fieldName: 'MES',
+					label: 'Mes',
+					visible: true,
+				},
+				{
+					fieldName: 'anio',
+					label: 'Año',
+					visible: true,
+				},
+				{
+					fieldName: 'X',
+					label: 'Longitud',
+					visible: true,
+				},
+				{
+					fieldName: 'Y',
+					label: 'Latitud',
+					visible: true,
+				},
+			],
+		},
+	],
+});
 
-const clusterestafasDefraudaciones = {
+const clusterEstafasDefraudaciones = {
 	type: "cluster",
 	clusterRadius: "100px",
 	// {cluster_count} is an aggregate field containing
@@ -306,7 +346,45 @@ const clusterestafasDefraudaciones = {
 	  },
 	  labelPlacement: "center-center",
 	}]
-  };
+};
+
+const clusterHurtoVewhiculo = {
+		type: "cluster",
+		clusterRadius: "100px",
+		// {cluster_count} is an aggregate field containing
+		// the number of features comprised by the cluster
+		popupTemplate: {
+			title: "Resumen",
+			content: "Este grupo representa {cluster_count} hurto de vehiculos.",
+			fieldInfos: [{
+			fieldName: "MODALIDAD",
+			format: {
+				places: 0,
+				digitSeparator: true
+			}
+			}]
+		},
+		clusterMinSize: "24px",
+		clusterMaxSize: "60px",
+		labelingInfo: [{
+			deconflictionStrategy: "none",
+			labelExpressionInfo: {
+			expression: "Text($feature.cluster_count, '#,###')"
+			},
+			symbol: {
+			type: "text",
+			color: "#17202a",
+			font: {
+				weight: "bold",
+				family: "Arial",
+				size: "20px",
+			},
+			haloSize: 1,
+			haloColor: "white"
+			},
+			labelPlacement: "center-center",
+		}]
+};
 
 @Injectable({
 	providedIn: 'root',
@@ -361,8 +439,8 @@ export class GeovisorSharedService {
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.estafasDefraudaciones}`,
 			popupTemplate: popupestafasDefraudaciones,
 			renderer: undefined,
-			visible: true,
-			featureReduction: clusterestafasDefraudaciones,
+			visible: false,
+			featureReduction: clusterEstafasDefraudaciones,
 			group:'MODALIDAD DE DELITO 2023'
 		},
 		{
@@ -440,10 +518,11 @@ export class GeovisorSharedService {
 		{
 			title:'HURTO DE VEHICULO',
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.hurtoVehiculo}`,
-			popupTemplate: undefined,
+			popupTemplate: popupHurtoVewhiculo,
 			renderer: undefined,
-			visible: false,
+			visible: true,
 			geometryType: "point",
+			featureReduction: clusterHurtoVewhiculo,
 			group:'MODALIDAD DE DELITO 2023'
 		},
 		{
@@ -661,12 +740,7 @@ export class GeovisorSharedService {
 		view.ui.add(new Zoom({view}),{position:'top-right',index:1});
 		view.ui.add(new Home({view }), {position:'top-right',index:2});
 		view.ui.add(new Locate({view, icon:'gps-on-f'}),{position:'top-right', index:3});
-
 		view.ui.add(new Expand({view, expandTooltip:'Galeria de Mapas Base', content: new BasemapGallery({view, icon:'move-to-basemap'})}), {position:'top-right', index:4});
-
-
-
-
 
 		this.legend = new Legend({view, container: document.createElement('div')});
 		new CoordinateConversion({view });
