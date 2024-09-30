@@ -4,7 +4,6 @@ import {LayerConfig} from '../interfaces/layerConfig';
 //*Libreria de ArcGIS 4.30
 import * as projection from '@arcgis/core/geometry/projection';
 import BasemapGallery from '@arcgis/core/widgets/BasemapGallery.js';
-
 import CoordinateConversion from '@arcgis/core/widgets/CoordinateConversion.js';
 import Expand from '@arcgis/core/widgets/Expand.js';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer.js';
@@ -15,178 +14,10 @@ import Map from '@arcgis/core/Map.js';
 import MapView from '@arcgis/core/views/MapView.js';
 import Point from '@arcgis/core/geometry/Point';
 import PopupTemplate from '@arcgis/core/PopupTemplate.js';
+import Search from "@arcgis/core/widgets/Search.js";
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import Zoom from '@arcgis/core/widgets/Zoom.js';
 
-import Search from "@arcgis/core/widgets/Search.js";
-
-
-
-
-
-
-
-const popupPatrimonio = new PopupTemplate({
-	title: '{GENERICO}',
-	content: [
-		{
-			type: 'fields',
-			fieldInfos: [
-				{
-					fieldName: 'MODALIDAD',
-					label: 'Modalidad',
-					visible: true,
-				},
-				{
-					fieldName: 'ESPECIFICO',
-					label: 'Especifico',
-					visible: true,
-				},
-				{
-					fieldName: 'MES',
-					label: 'Mes',
-					visible: true,
-				},
-				{
-					fieldName: 'anio',
-					label: 'Año',
-					visible: true,
-				},
-				{
-					fieldName: 'X',
-					label: 'Longitud',
-					visible: true,
-				},
-				{
-					fieldName: 'Y',
-					label: 'Latitud',
-					visible: true,
-				},
-			],
-		},
-	],
-});
-const popupVidCuerSalud = new PopupTemplate({
-
-	title: '{GENERICO}',
-	content: [
-		{
-			type: 'fields',
-			fieldInfos: [
-				{
-					fieldName: 'MODALIDAD',
-					label: 'Modalidad',
-					visible: true,
-				},
-				{
-					fieldName: 'ESPECIFICO',
-					label: 'Especifico',
-					visible: true,
-				},
-				{
-					fieldName: 'MES',
-					label: 'Mes',
-					visible: true,
-				},
-				{
-					fieldName: 'anio',
-					label: 'Año',
-					visible: true,
-				},
-				{
-					fieldName: 'X',
-					label: 'Longitud',
-					visible: true,
-				},
-				{
-					fieldName: 'Y',
-					label: 'Latitud',
-					visible: true,
-				},
-			],
-		},
-	],
-});
-const popupContLibertad = new PopupTemplate({
-	title: '{GENERICO}',
-	content: [
-		{
-			type: 'fields',
-			fieldInfos: [
-				{
-					fieldName: 'MODALIDAD',
-					label: 'Modalidad',
-					visible: true,
-				},
-				{
-					fieldName: 'ESPECIFICO',
-					label: 'Especifico',
-					visible: true,
-				},
-				{
-					fieldName: 'MES',
-					label: 'Mes',
-					visible: true,
-				},
-				{
-					fieldName: 'anio',
-					label: 'Año',
-					visible: true,
-				},
-				{
-					fieldName: 'X',
-					label: 'Longitud',
-					visible: true,
-				},
-				{
-					fieldName: 'Y',
-					label: 'Latitud',
-					visible: true,
-				},
-			],
-		},
-	],
-});
-const popupOtrDelitos = new PopupTemplate({
-	title: '{GENERICO}',
-	content: [
-		{
-			type: 'fields',
-			fieldInfos: [
-				{
-					fieldName: 'MODALIDAD',
-					label: 'Modalidad',
-					visible: true,
-				},
-				{
-					fieldName: 'ESPECIFICO',
-					label: 'Especifico',
-					visible: true,
-				},
-				{
-					fieldName: 'MES',
-					label: 'Mes',
-					visible: true,
-				},
-				{
-					fieldName: 'anio',
-					label: 'Año',
-					visible: true,
-				},
-				{
-					fieldName: 'X',
-					label: 'Longitud',
-					visible: true,
-				},
-				{
-					fieldName: 'Y',
-					label: 'Latitud',
-					visible: true,
-				},
-			],
-		},
-	],
-});
 const popupRoboAgravado = new PopupTemplate({
 	title: '{GENERICO}',
 	content: [
@@ -227,8 +58,6 @@ const popupRoboAgravado = new PopupTemplate({
 		},
 	],
 });
-
-
 const popupestafasDefraudaciones = new PopupTemplate({
 	title: '{ESPECIFICO}',
 	content: [
@@ -309,7 +138,6 @@ const popupHurtoVewhiculo = new PopupTemplate({
 		},
 	],
 });
-
 const clusterEstafasDefraudaciones = {
 	type: "cluster",
 	clusterRadius: "100px",
@@ -347,7 +175,6 @@ const clusterEstafasDefraudaciones = {
 	  labelPlacement: "center-center",
 	}]
 };
-
 const clusterHurtoVewhiculo = {
 		type: "cluster",
 		clusterRadius: "100px",
@@ -385,12 +212,16 @@ const clusterHurtoVewhiculo = {
 			labelPlacement: "center-center",
 		}]
 };
-
 @Injectable({
 	providedIn: 'root',
 })
 export class GeovisorSharedService {
-	public mapa = new Map({basemap: 'topo-vector'});
+	public mapa = new Map({basemap: {
+		portalItem: {
+			id: "8d91bd39e873417ea21673e0fee87604" // nova basemap
+		}
+	}});
+	//public mapa = new Map({basemap: 'topo-vector'});
 	public view!: MapView;
 
 	public layerUrls = {
@@ -570,43 +401,7 @@ export class GeovisorSharedService {
 			geometryType: "point",
 			group:'MODALIDAD DE DELITO 2023'
 		},
-		//*Capas de Otros delitos
-		{
-			title:'OTROS DELITOS',
-			url: `${this.layerUrlsDelitos.baseServicio}/${this.layerUrlsDelitos.delito.otrosDelitos}`,
-			popupTemplate: popupOtrDelitos,
-			renderer: undefined,
-			visible: false,
-			geometryType: "point",
-			group:'DELITOS GENERICOS 2023'
-		},
-		{
-			title:'CONTRA LA LIBERTAD',
-			url: `${this.layerUrlsDelitos.baseServicio}/${this.layerUrlsDelitos.delito.contraLibertad}`,
-			popupTemplate: popupContLibertad,
-			renderer: undefined,
-			visible: false,
-			geometryType: "point",
-			group:'DELITOS GENERICOS 2023'
-		},
-		{
-			title:'LA VIDA, CUERPO Y SALUD',
-			url: `${this.layerUrlsDelitos.baseServicio}/${this.layerUrlsDelitos.delito.vidaCuerpoSalud}`,
-			popupTemplate: popupVidCuerSalud,
-			renderer: undefined,
-			visible: false,
-			geometryType: "point",
-			group:'DELITOS GENERICOS 2023'
-		},
-		{
-			title:'CONTRA EL PATRIMONIO',
-			url: `${this.layerUrlsDelitos.baseServicio}/${this.layerUrlsDelitos.delito.patrimonio}`,
-			popupTemplate: popupPatrimonio,
-			renderer: undefined,
-			visible: false,
-			geometryType: "point",
-			group:'DELITOS GENERICOS 2023'
-		},
+		//*Capas de Limites Politicos
 		{
 			title: 'DISTRITOS',
 			url: `${this.layerUrls.baseService}/${this.layerUrls.limits.distritos}`,
