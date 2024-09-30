@@ -228,16 +228,58 @@ const popupRoboAgravado = new PopupTemplate({
 	],
 });
 
-const clusterConfig = {
+
+const popupestafasDefraudaciones = new PopupTemplate({
+	title: '{ESPECIFICO}',
+	content: [
+		{
+			type: 'fields',
+			fieldInfos: [
+				{
+					fieldName: 'MODALIDAD',
+					label: 'Modalidad',
+					visible: true,
+				},
+				{
+					fieldName: 'ESPECIFICO',
+					label: 'Especifico',
+					visible: true,
+				},
+				{
+					fieldName: 'MES',
+					label: 'Mes',
+					visible: true,
+				},
+				{
+					fieldName: 'anio',
+					label: 'Año',
+					visible: true,
+				},
+				{
+					fieldName: 'X',
+					label: 'Longitud',
+					visible: true,
+				},
+				{
+					fieldName: 'Y',
+					label: 'Latitud',
+					visible: true,
+				},
+			],
+		},
+	],
+});
+
+const clusterestafasDefraudaciones = {
 	type: "cluster",
 	clusterRadius: "100px",
 	// {cluster_count} is an aggregate field containing
 	// the number of features comprised by the cluster
 	popupTemplate: {
-	  title: "Cluster summary",
-	  content: "This cluster represents {MES} earthquakes.",
+	  title: "Resumen",
+	  content: "Este grupo representa {cluster_count} estafas y otras defraudaciones.",
 	  fieldInfos: [{
-		fieldName: "MES",
+		fieldName: "MODALIDAD",
 		format: {
 		  places: 0,
 		  digitSeparator: true
@@ -249,16 +291,18 @@ const clusterConfig = {
 	labelingInfo: [{
 	  deconflictionStrategy: "none",
 	  labelExpressionInfo: {
-		expression: "Text($feature.MES, '#,###')"
+		expression: "Text($feature.cluster_count, '#,###')"
 	  },
 	  symbol: {
 		type: "text",
-		color: "#004a5d",
+		color: "#17202a",
 		font: {
 		  weight: "bold",
-		  family: "Noto Sans",
-		  size: "12px"
-		}
+		  family: "Arial",
+		  size: "20px",
+		},
+		haloSize: 1,
+    haloColor: "white"
 	  },
 	  labelPlacement: "center-center",
 	}]
@@ -315,14 +359,10 @@ export class GeovisorSharedService {
 		{
 			title:'ESTAFA Y OTRAS DEFRAUDACIONES',
 			url: `${this.layerUrlsModalidadDelito.baseServicio}/${this.layerUrlsModalidadDelito.modalidad.estafasDefraudaciones}`,
-			popupTemplate: undefined,
+			popupTemplate: popupestafasDefraudaciones,
 			renderer: undefined,
 			visible: true,
-			geometryType: "point",
-			featureReduction: {
-				type: "cluster",
-				clusterRadius: 100,
-			},
+			featureReduction: clusterestafasDefraudaciones,
 			group:'MODALIDAD DE DELITO 2023'
 		},
 		{
