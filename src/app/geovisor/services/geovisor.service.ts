@@ -18,6 +18,7 @@ import Search from "@arcgis/core/widgets/Search.js";
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import Zoom from '@arcgis/core/widgets/Zoom.js';
 
+//* Popup y Clusters
 const popupRoboAgravado = new PopupTemplate({
 	title: '{GENERICO}',
 	content: [
@@ -99,7 +100,7 @@ const popupestafasDefraudaciones = new PopupTemplate({
 	],
 });
 const popupHurtoVewhiculo = new PopupTemplate({
-	title: '{MODALIDAD}',
+	title: 'Codigo : {OBJECTID} - {MES}',
 	content: [
 		{
 			type: 'fields',
@@ -141,11 +142,9 @@ const popupHurtoVewhiculo = new PopupTemplate({
 const clusterEstafasDefraudaciones = {
 	type: "cluster",
 	clusterRadius: "100px",
-	// {cluster_count} is an aggregate field containing
-	// the number of features comprised by the cluster
 	popupTemplate: {
-	  title: "Resumen",
-	  content: "Este grupo representa {cluster_count} estafas y otras defraudaciones.",
+	  title: "Conteo : {cluster_count}",
+	  content: "Este grupo representa un total de : {cluster_count} registros.",
 	  fieldInfos: [{
 		fieldName: "MODALIDAD",
 		format: {
@@ -172,19 +171,17 @@ const clusterEstafasDefraudaciones = {
 		haloSize: 1,
     haloColor: "white"
 	  },
-	  labelPlacement: "center-center",
+	  labelPlacement: "above-center",
 	}]
 };
 const clusterHurtoVewhiculo = {
 		type: "cluster",
 		clusterRadius: "100px",
-		// {cluster_count} is an aggregate field containing
-		// the number of features comprised by the cluster
 		popupTemplate: {
-			title: "Resumen",
-			content: "Este grupo representa {cluster_count} hurto de vehiculos.",
+			title: "Conteo : {cluster_count}",
+			content: "Este grupo representa un total de : {cluster_count} registros.",
 			fieldInfos: [{
-			fieldName: "MODALIDAD",
+			fieldName: "{MODALIDAD}",
 			format: {
 				places: 0,
 				digitSeparator: true
@@ -209,7 +206,7 @@ const clusterHurtoVewhiculo = {
 			haloSize: 1,
 			haloColor: "white"
 			},
-			labelPlacement: "center-center",
+			labelPlacement: "above-center",
 		}]
 };
 @Injectable({
@@ -221,7 +218,6 @@ export class GeovisorSharedService {
 			id: "8d91bd39e873417ea21673e0fee87604" // nova basemap
 		}
 	}});
-	//public mapa = new Map({basemap: 'topo-vector'});
 	public view!: MapView;
 
 	public layerUrls = {
@@ -408,7 +404,7 @@ export class GeovisorSharedService {
 			labelingInfo: undefined,
 			popupTemplate: undefined,
 			renderer: undefined,
-			visible: true,
+			visible: false,
 			group: 'LIMITES POLITICOS',
 		},
 		{
@@ -505,7 +501,7 @@ export class GeovisorSharedService {
 			container: container,
 			map: this.mapa,
 			center: [-77.02824, -12.04318],
-			zoom: 11.5,
+			zoom: 12,
 			rotation: 0,
 			constraints: {
 				maxZoom: 25,
